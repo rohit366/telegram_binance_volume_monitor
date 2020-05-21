@@ -33,7 +33,7 @@ bot_subscribed = bot_subscribed + bot_admins
 
 # LOG
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                     level=logging.INFO)
+					 level=logging.INFO)
 
 
 
@@ -53,11 +53,11 @@ class bot:
 		self.updater = Updater(telegram_token, use_context=True)
 		self.dispatcher = self.updater.dispatcher
 		
-        #-------------------
+		#-------------------
 		# Command handlers
-        #-------------------
+		#-------------------
 
-        # /start
+		# /start
 		start_handler = CommandHandler('start', self.start)
 		self.dispatcher.add_handler(start_handler)
 
@@ -65,7 +65,7 @@ class bot:
 		stop_handler = CommandHandler('stop', self.stop_bot)
 		self.dispatcher.add_handler(stop_handler)
 		
-        # /help
+		# /help
 		help_handler = CommandHandler('help', self.help_bot)
 		self.dispatcher.add_handler(help_handler)
 
@@ -77,18 +77,18 @@ class bot:
 		nvolbtc_handler = CommandHandler('nvolbtc', self.set_nvolbtc)
 		self.dispatcher.add_handler(nvolbtc_handler)
 		
-        #-------------------
+		#-------------------
 		
 		# Start polling
 		self.updater.start_polling()
 		self.updater.idle()
-    
+	
 	def user_msg(self, chat_id, msg):
 		self.updater.bot.send_message(chat_id=chat_id, text=msg, parse_mode=ParseMode.MARKDOWN, timeout=15)
 
 	def all_msg(self, msg):
 		global users_list
-        
+		
 		for chat_id in users_list:
 			self.updater.bot.send_message(chat_id, msg, parse_mode=ParseMode.MARKDOWN, timeout=15)
 	
@@ -126,7 +126,7 @@ Datetime(UTC): %s''' % (m['symbol'],m['pings'],m['nvol_btc'],m['nvol_per'],m['rv
 			msg = 'Ping must be a number'
 
 		self.user_msg(update.message.chat_id, msg)
-    # -------
+	# -------
 	# /nvolbtc N: FILTER NVOLBTC TO NOTIFY
 	# -------
 	def set_nvolbtc(self, update, context):
