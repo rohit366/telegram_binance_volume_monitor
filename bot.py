@@ -97,7 +97,8 @@ class bot:
 	#*******************
 	def notify_ping(self, m):
 		msg = '''
-- PING DETECTED -
+- MOVE DETECTED -
+
 Symbol: %s
 PING: %s
 Net Vol BTC: %s
