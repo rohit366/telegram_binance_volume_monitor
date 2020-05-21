@@ -36,60 +36,63 @@ class binance_volume_monitor(threading.Thread):
 		self.max_net_vol_btc = float(nvolbtc)
 
 	def update(self):
-		r = requests.post(self.url)
-		r = json.loads(r.text)['resu']
+        try:
+            r = requests.post(self.url)
+            r = json.loads(r.text)['resu']
 
-		#print(r)
-		#print('Set ping [%s]' % self.max_ping)
-		#print('Set nvol [%s]' % self.max_net_vol_btc)
+            #print(r)
+            #print('Set ping [%s]' % self.max_ping)
+            #print('Set nvol [%s]' % self.max_net_vol_btc)
 
-		last_id = r[-1]
-		if self.last_id == 0:
-			self.last_id = last_id
-		elif last_id > self.last_id:
-			self.last_id = last_id
-		else:
-			return
-		
-		if len(r) > 1:
-			for i in r:
-				if type(i) != int:
-					l = i.split('|')
+            last_id = r[-1]
+            if self.last_id == 0:
+                self.last_id = last_id
+            elif last_id > self.last_id:
+                self.last_id = last_id
+            else:
+                return
+            
+            if len(r) > 1:
+                for i in r:
+                    if type(i) != int:
+                        l = i.split('|')
 
-					symbol = l[0]
-					data = {
-						'symbol': l[0],
-						'pings': l[1],
-						'nvol_btc': l[2],
-						'nvol_per': l[3],
-						'rvol_btc': l[4],
-						'rvol_per': l[5],
-						'rnvol': l[6],
-						'ts': l[7]
-					}
+                        symbol = l[0]
+                        data = {
+                            'symbol': l[0],
+                            'pings': l[1],
+                            'nvol_btc': l[2],
+                            'nvol_per': l[3],
+                            'rvol_btc': l[4],
+                            'rvol_per': l[5],
+                            'rnvol': l[6],
+                            'ts': l[7]
+                        }
 
-					self.pings[symbol] = data
-					
-					if self.max_ping > 0:
-						if int(data['pings']) < self.max_ping:
-							#notify
-							ping_notify = True
-						else:
-							ping_notify = False
-					else:
-						ping_notify = True
-					
-					if self.max_net_vol_btc > 0:
-						if float(data['nvol_btc']) < self.max_net_vol_btc:
-							nvolbtc_notify = True
-						else:
-							nvolbtc_notify = False
-					else:
-						nvolbtc_notify = True
-					
-					if ping_notify and nvolbtc_notify:
-						if self.max_ping != 0 or self.max_net_vol_btc !=0:
-							self.signals.update.emit(data)
+                        self.pings[symbol] = data
+                        
+                        if self.max_ping > 0:
+                            if int(data['pings']) < self.max_ping:
+                                #notify
+                                ping_notify = True
+                            else:
+                                ping_notify = False
+                        else:
+                            ping_notify = True
+                        
+                        if self.max_net_vol_btc > 0:
+                            if float(data['nvol_btc']) < self.max_net_vol_btc:
+                                nvolbtc_notify = True
+                            else:
+                                nvolbtc_notify = False
+                        else:
+                            nvolbtc_notify = True
+                        
+                        if ping_notify and nvolbtc_notify:
+                            if self.max_ping != 0 or self.max_net_vol_btc !=0:
+                                self.signals.update.emit(data)
+        except Exception as e:
+            print("Exception on update: {}".format(e))
 
 		
 
