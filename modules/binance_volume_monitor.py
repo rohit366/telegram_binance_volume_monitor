@@ -39,9 +39,9 @@ class binance_volume_monitor(threading.Thread):
 		r = requests.post(self.url)
 		r = json.loads(r.text)['resu']
 
-		print(r)
-		print('Set ping [%s]' % self.max_ping)
-		print('Set nvol [%s]' % self.max_net_vol_btc)
+		#print(r)
+		#print('Set ping [%s]' % self.max_ping)
+		#print('Set nvol [%s]' % self.max_net_vol_btc)
 
 		last_id = r[-1]
 		if self.last_id == 0:
