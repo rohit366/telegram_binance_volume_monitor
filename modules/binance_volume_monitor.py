@@ -93,7 +93,7 @@ class binance_volume_monitor(threading.Thread):
 								self.signals.update.emit(data)
 								print("[+] Notified ping {}".format(data))
 						else:
-							print("[*] Not notified p:%s v:%s {}".format(data) % (self.max_ping, self.max_net_vol_btc))
+							print("[*] Not notified p:%s v:%s %s" % (self.max_ping, self.max_net_vol_btc, "{}".format(data)))
 		except Exception as e:
 			print("Exception on update: {}".format(e))
 
