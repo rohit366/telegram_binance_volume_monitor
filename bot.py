@@ -109,6 +109,7 @@ Recent Net Vol: %s
 Datetime(UTC): %s''' % (m['symbol'],m['pings'],m['nvol_btc'],m['nvol_per'],m['rvol_btc'],m['rvol_per'],m['rnvol'],m['ts'])
 		
 		self.all_msg(msg)
+		print("[BOT] notified ping: {}".format(m))
 	
 	# -------
 	# /ping N: FILTER PING TO NOTIFY
